@@ -5,8 +5,8 @@ spring:
   application:
     name: maki_test
   datasource:
-#    url: jdbc:mysql://mysql-0.mysql.goormthon-4.svc.cluster.local:3306/goorm?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-    url: jdbc:mysql://localhost:3306/goorm?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    url: jdbc:mysql://mysql-0.mysql.goormthon-4.svc.cluster.local:3306/goorm?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+#    url: jdbc:mysql://localhost:3306/goorm?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: goorm
     password: goorm123!
@@ -20,8 +20,8 @@ spring:
         dialect: org.hibernate.dialect.MySQL8Dialect
   data:
     mongodb:
-#      uri: mongodb://goorm:goorm123!%21@mongodb-0.mongodb.goormthon-4.svc.cluster.local:27017/local?authSource=admin
-      uri: mongodb://goorm:goorm123!@localhost:27017/local?authSource=admin
+      uri: mongodb://goorm:goorm123!%21@mongodb-0.mongodb.goormthon-4.svc.cluster.local:27017/local?authSource=admin
+#      uri: mongodb://goorm:goorm123!@localhost:27017/local?authSource=admin
       database: local
 springdoc:
   api-docs:
