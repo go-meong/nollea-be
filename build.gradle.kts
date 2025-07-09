@@ -30,7 +30,7 @@ dependencies {
     // JPA (Hibernate) 기반 ORM 스타터
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     // MySQL JDBC 드라이버 (버전 명시)
-    implementation("mysql:mysql-connector-java:8.0.33")
+    runtimeOnly("com.mysql:mysql-connector-j:8.0.32")
     // MongoDB 연동 스타터
     implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
     // Bean Validation 지원 스타터
@@ -41,6 +41,8 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     // SLF4J 로깅 (Spring Boot 기본 로깅 지원, 필요시 명시)
     implementation("org.springframework.boot:spring-boot-starter-logging")
+    // spring ai
+    implementation("org.springframework.ai:spring-ai-openai-spring-boot-starter:1.0.0-M6")
     // 개발 편의성용 핫 리로딩 도구
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     // 통합 테스트 스타터 (JUnit, Mockito 포함)
@@ -49,6 +51,12 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
     // JUnit 플랫폼 런처
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+}
+
+dependencyManagement {
+    imports {
+        mavenBom("org.springframework.ai:spring-ai-bom:1.0.0-M6")
+    }
 }
 
 kotlin {
