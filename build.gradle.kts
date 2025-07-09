@@ -30,7 +30,7 @@ dependencies {
     // JPA (Hibernate) 기반 ORM 스타터
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     // MySQL JDBC 드라이버 (버전 명시)
-    runtimeOnly("com.mysql:mysql-connector-j:8.0.45")
+    implementation("com.mysql:mysql-connector-j:8.3.0")
     // MongoDB 연동 스타터
     implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
     // Bean Validation 지원 스타터
