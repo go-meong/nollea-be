@@ -1,7 +1,7 @@
 spring:
   ai:
     openai:
-      api-key: ${AI_API_KEY}
+      api-key: ${API_KEY}
   application:
     name: maki_test
   datasource:
