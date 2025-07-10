@@ -29,6 +29,9 @@ data class RecommendTourListDTO(
     val categoryList: List<CategoryEnum>,
     val fullAddress: String,
     val title: String,
+    val recommendReason: String,
+    val reviews: List<String> = emptyList(),
+    val imageUrl: String?,
     val coordinates: List<Double>,
     val serviceHours: List<String>,
 )

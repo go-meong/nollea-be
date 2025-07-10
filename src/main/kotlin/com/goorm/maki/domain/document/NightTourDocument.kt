@@ -17,16 +17,8 @@ data class NightTourDocument(
     val serviceHours: List<String>,
     val description: String,
     val imageId: ObjectId?,
-    val lastBusInfo: List<String>?,
     val reviews: List<String>? = emptyList(),
     val positiveCount: Long? = 0,
     val negativeCount: Long? = 0,
-    val tags: Tags,
     )
 
-data class Tags(
-    val companionType: String,
-    val travelMethod: String,
-    val placeMood: String,
-    val activity: String
-)

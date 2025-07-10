@@ -2,7 +2,6 @@ package com.goorm.maki.domain.dto
 
 import com.goorm.maki.constant.CategoryEnum
 import com.goorm.maki.domain.document.NightTourDocument
-import org.bson.types.ObjectId
 
 data class NightTourDTO(
     val id: String?,
@@ -39,10 +38,9 @@ data class NightTourRequestDto(
 )
 
 data class NightTourPicDTO(
-    val id: ObjectId,
+    val id: String,
     val originalName: String,  // 원본 파일명
-    val savedName: String,     // 서버에 저장된 파일명 (UUID 등)
-    val path: String,          // 저장 경로 (예: /upload/...)
+    val contentType: String,   // MIME 타입 (image/jpeg 등)
     val size: Long,            // 파일 크기 (바이트)
-    val contentType: String    // MIME 타입 (image/jpeg 등)
+    val base64: String         // base64로 인코딩된 데이터
 )

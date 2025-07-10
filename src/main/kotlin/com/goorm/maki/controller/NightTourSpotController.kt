@@ -52,17 +52,10 @@ class NightTourSpotController(
         consumes = ["multipart/form-data"]
     )
     @Operation(summary = "야간 관광명소 이미지 등록", description = "야간 관광명소 이미지를 등록하는 API입니다.")
-    fun createNightTourPic(@RequestParam("file") file: MultipartFile): NightTourPicDTO {
+    fun createNightTourPic(@RequestParam("file") file: MultipartFile): NightTourPicDTO =
+        service.createNightTourPic(file)
 
-        return NightTourPicDTO(
-            id = ObjectId("64a8f1a2b7d2e3c111222333"),
-            originalName = file.originalFilename ?: "unknown",
-            savedName = file.originalFilename ?: "unknown",  // 보통 UUID로 저장함
-            path = "/upload/${file.originalFilename ?: "unknown"}",  // 저장 경로 예시
-            size = file.size,
-            contentType = file.contentType ?: "application/octet-stream"
-        )
-    }
+
 
     @GetMapping("/{placeId}")
     @Operation(summary = "야간 관광명소 상세 조회", description = "야간 관광명소를 상세조회하는 API입니다.")
