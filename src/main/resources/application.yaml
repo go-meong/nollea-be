@@ -24,10 +24,10 @@ spring:
         dialect: org.hibernate.dialect.MySQL8Dialect
   data:
     mongodb:
-      uri: mongodb://goorm:goorm123@mongodb-0.mongodb.goormthon-4.svc.cluster.local:27017/nollea?authSource=nollea
+      uri: mongodb://goorm:goorm123@mongodb-0.mongodb.goormthon-4.svc.cluster.local:27017/
 #      uri: mongodb://goorm:goorm123@localhost:27017/?ssl=false
       database: nollea
-      authentication-database: nollea
+      authentication-database: admin
 springdoc:
   api-docs:
     enabled: true
