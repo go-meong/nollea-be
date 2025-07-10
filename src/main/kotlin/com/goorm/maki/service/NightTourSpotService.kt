@@ -6,6 +6,7 @@ import com.goorm.maki.domain.document.NightTourImageDocument
 import com.goorm.maki.domain.dto.NightTourDTO
 import com.goorm.maki.domain.dto.NightTourPicDTO
 import com.goorm.maki.domain.dto.NightTourRequestDto
+import com.goorm.maki.repository.NightTourImageRepository
 import com.goorm.maki.repository.NightTourRepository
 import org.bson.types.ObjectId
 import org.springframework.stereotype.Service
@@ -15,6 +16,7 @@ import java.util.*
 @Service
 class NightTourSpotService(
     private val nightTourRepository: NightTourRepository,
+    private val nightTourImageRepository: NightTourImageRepository,
     private val kakaoLocalClient: KakaoLocalClient,
 ) {
 
@@ -35,7 +37,7 @@ class NightTourSpotService(
 
             val result = nightTourRepository.save(reqToDocument)
 
-            NightTourDTO.from(result)
+            NightTourDTO.from(result, null)
         }
 
     fun createNightTourPic(file: MultipartFile): NightTourPicDTO {
@@ -66,4 +68,16 @@ class NightTourSpotService(
         val contentType = file.contentType ?: "application/octet-stream"
         return "data:$contentType;base64,$base64"
     }
+
+    fun findNightTour(): List<NightTourDTO> {
+        val tours = nightTourRepository.findAll()
+        val imageIdList = tours.mapNotNull { it.imageId }.toSet()
+        val images = nightTourImageRepository.findAllById(imageIdList).associateBy { it.id }
+
+        return tours.map { tour ->
+            val imageUrl = tour.imageId?.let { images[it]?.base64 }
+            NightTourDTO.from(tour, imageUrl)
+        }
+    }
+
 }

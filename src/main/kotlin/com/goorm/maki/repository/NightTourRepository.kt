@@ -14,4 +14,8 @@ class NightTourRepository(
 
     fun saveImage(nightTourImageDocument: NightTourImageDocument): NightTourImageDocument =
         mongoTemplate.save(nightTourImageDocument)
+
+    fun findAll(): List<NightTourDocument> = mongoTemplate.findAll(NightTourDocument::class.java)
+
+    fun findById(id: String): NightTourDocument? = mongoTemplate.findById(id, NightTourDocument::class.java)
 }

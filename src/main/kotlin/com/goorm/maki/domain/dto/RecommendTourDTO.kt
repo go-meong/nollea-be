@@ -12,7 +12,6 @@ data class RecommendTourDTO(
     val serviceHours: List<String>,
     val description: String,
     val imageId: ObjectId?,
-    val congestionLevel: String?,
     val lastBusInfo: String?,
     val reviews: List<String> = emptyList(),
     val positiveCount: Long,
@@ -35,7 +34,34 @@ data class RecommendTourListDTO(
     val imageUrl: String?,
     val coordinates: List<Double>,
     val serviceHours: List<String>,
-)
+){
+    companion object {
+        fun from(rawDTO: NightTourRawDTO, imageUrl: String?, recommendReason: String): RecommendTourListDTO =
+            with(rawDTO) {
+                val total = positiveCount + negativeCount
+
+                val reviewRatios = if (total > 0) {
+                    val positiveRatio = (positiveCount * 100 / total).toInt()
+                    val negativeRatio = 100 - positiveRatio
+                    listOf(positiveRatio, negativeRatio)
+                } else {
+                    listOf(0, 0)
+                }
+
+                RecommendTourListDTO(
+                    id = id,
+                    title = title,
+                    fullAddress = fullAddress,
+                    coordinates = coordinates,
+                    categoryList = categoryList,
+                    serviceHours = serviceHours,
+                    imageUrl = imageUrl,
+                    recommendReason = recommendReason,
+                    reviewRatios = reviewRatios
+                )
+            }
+    }
+}
 
 data class RecommendTourResponseDTO(
     val id: String,

@@ -13,7 +13,7 @@ data class NightTourDTO(
     val imageUrl: String? = null,
 ) {
     companion object {
-        fun from(document: NightTourDocument): NightTourDTO =
+        fun from(document: NightTourDocument, imgUrl: String?): NightTourDTO =
             with(document) {
                 NightTourDTO(
                     id = id.toHexString(),
@@ -22,7 +22,7 @@ data class NightTourDTO(
                     categoryList = categoryList,
                     serviceHours = serviceHours,
                     description = description,
-                    imageUrl = imageId?.toHexString()
+                    imageUrl = imgUrl
                 )
             }
     }
@@ -44,3 +44,38 @@ data class NightTourPicDTO(
     val size: Long,            // 파일 크기 (바이트)
     val base64: String         // base64로 인코딩된 데이터
 )
+
+data class NightTourRawDTO(
+    val id: String,
+    val title: String,
+    val fullAddress: String,
+    val coordinates: List<Double>,
+    val categoryList: List<CategoryEnum>,
+    val serviceHours: List<String>,
+    val recommendReason: String?,
+    val description: String,
+    val imageId: String? = null,
+    val reviews: List<String> = emptyList(),
+    val positiveCount: Long = 0,
+    val negativeCount: Long = 0,
+) {
+    companion object {
+        fun from(document: NightTourDocument, recommendReason: String?): NightTourRawDTO = with(document) {
+            NightTourRawDTO(
+                id = id.toHexString(),
+                title = title,
+                fullAddress = fullAddress,
+                coordinates = coordinates,
+                categoryList = categoryList,
+                serviceHours = serviceHours,
+                description = description,
+                imageId = imageId?.toHexString(),
+                reviews = reviews ?: emptyList(),
+                positiveCount = positiveCount ?: 0,
+                negativeCount = negativeCount ?: 0,
+                recommendReason = recommendReason ?: "추천사유없음"
+            )
+        }
+    }
+}
+
