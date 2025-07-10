@@ -38,7 +38,7 @@ class SecurityConfig {
     ): SecurityFilterChain {
         http
             .csrf { it.disable() }
-            .cors { it.disable() }
+            .cors { it.configurationSource(corsConfigurationSource) } // ✅ 요거 추가!
             .formLogin { it.disable() }
             .httpBasic { it.disable() }
             .logout { it.disable() }

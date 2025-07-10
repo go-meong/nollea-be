@@ -4,15 +4,18 @@ metadata:
   name: nollea-backend-ingress
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/proxy-body-size: 100m
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
 spec:
+  ingressClassName: nginx
   rules:
     - host: nollea-backend.goorm.training
       http:
         paths:
-          - path: /api
+          - path: /
             pathType: Prefix
             backend:
               service:
                 name: nollea-backend
                 port:
-                  number: 8080  # 백엔드 서비스 포트에 맞게 수정해줘야 함
+                  number: 8080
