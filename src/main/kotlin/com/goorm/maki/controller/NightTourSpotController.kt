@@ -1,6 +1,6 @@
 package com.goorm.maki.controller
 
-import com.goorm.maki.NightTourSpotService
+import com.goorm.maki.service.NightTourSpotService
 import com.goorm.maki.constant.CategoryEnum
 import com.goorm.maki.domain.dto.*
 import io.swagger.v3.oas.annotations.Operation

@@ -1,6 +1,5 @@
-package com.goorm.maki
+package com.goorm.maki.service
 
-import com.goorm.maki.constant.CategoryEnum
 import com.goorm.maki.domain.document.NightTourDocument
 import com.goorm.maki.domain.document.Tags
 import com.goorm.maki.domain.dto.NightTourDTO
