@@ -3,9 +3,7 @@ package com.goorm.maki.service
 import com.goorm.maki.client.KakaoLocalClient
 import com.goorm.maki.domain.document.NightTourDocument
 import com.goorm.maki.domain.document.NightTourImageDocument
-import com.goorm.maki.domain.dto.NightTourDTO
-import com.goorm.maki.domain.dto.NightTourPicDTO
-import com.goorm.maki.domain.dto.NightTourRequestDto
+import com.goorm.maki.domain.dto.*
 import com.goorm.maki.repository.NightTourImageRepository
 import com.goorm.maki.repository.NightTourRepository
 import org.bson.types.ObjectId
@@ -69,15 +67,26 @@ class NightTourSpotService(
         return "data:$contentType;base64,$base64"
     }
 
-    fun findNightTour(): List<NightTourDTO> {
-        val tours = nightTourRepository.findAll()
-        val imageIdList = tours.mapNotNull { it.imageId }.toSet()
-        val images = nightTourImageRepository.findAllById(imageIdList).associateBy { it.id }
+    fun findNightTour(): List<RecommendTourListDTO> {
+        val tours = nightTourRepository.findAll().map {
+            NightTourRawDTO.from(
+                it, null
+            )
+        }
 
         return tours.map { tour ->
-            val imageUrl = tour.imageId?.let { images[it]?.base64 }
-            NightTourDTO.from(tour, imageUrl)
+            // 1. 이미지 도큐먼트 조회 (imageId → base64)
+            val imageUrl = tour.imageId
+                ?.let { nightTourImageRepository.findById(ObjectId(it)).orElse(null)?.base64 }
+
+            // 3. 변환
+            RecommendTourListDTO.from(
+                rawDTO = tour,
+                imageUrl = imageUrl,
+                recommendReason = ""
+            )
         }
     }
+
 
 }
