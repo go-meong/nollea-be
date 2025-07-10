@@ -18,22 +18,24 @@ class NightTourSpotController {
     fun findNightTour(): List<NightTourDTO> {
         return listOf(
             NightTourDTO(
-                id = ObjectId("64a8f0f8b7d2e3c123456789"),
+                id = ObjectId("64a8f0f8b7d2e3c123456789").toHexString(),
                 fullAddress = "서울특별시 중구 세종대로 110",
                 zipcode = "04524",
+                title = "서울야시장",
                 categoryList = listOf(CategoryEnum.FOOD, CategoryEnum.NIGHT_MARKET),
                 serviceHours = listOf("18:00-23:00", "12:00-21:00"),
                 description = "서울에서 가장 유명한 야시장 중 하나입니다.",
-                imageId = ObjectId("64a8f1a2b7d2e3c987654321")
+                imageUrl = "uploads/night-tour/no.png"
             ),
             NightTourDTO(
-                id = ObjectId("64a8f123b7d2e3c112233445"),
+                id = ObjectId("64a8f123b7d2e3c112233445").toHexString(),
                 fullAddress = "부산광역시 해운대구 달맞이길 25",
+                title = "부산 산책길",
                 zipcode = "48095",
                 categoryList = listOf(CategoryEnum.NATURE, CategoryEnum.NIGHT_VIEW, CategoryEnum.ROMANTIC),
                 serviceHours = listOf("09:00-22:00"),
                 description = "바다와 야경이 어우러진 로맨틱한 산책길입니다.",
-                imageId = ObjectId("64a8f1a2b7d2e3c111222333")
+                imageUrl = "uploads/night-tour/wecandoit.png"
             )
         )
     }
@@ -42,13 +44,13 @@ class NightTourSpotController {
     @Operation(summary = "야간 관광명소 등록", description = "야간 관광명소를 등록하는 API입니다.")
     fun createNightTour(@RequestBody nightTourRequestDto: NightTourRequestDto): NightTourDTO {
         return NightTourDTO(
-            id = ObjectId("64a8f123b7d2e3c112233445"),
+            id = ObjectId("64a8f123b7d2e3c112233445").toHexString(),
             fullAddress = "부산광역시 해운대구 달맞이길 25",
+            title = "부산 산책길",
             zipcode = "48095",
             categoryList = listOf(CategoryEnum.NATURE, CategoryEnum.NIGHT_VIEW, CategoryEnum.ROMANTIC),
             serviceHours = listOf("09:00-22:00"),
             description = "바다와 야경이 어우러진 로맨틱한 산책길입니다.",
-            imageId = ObjectId("64a8f1a2b7d2e3c111222333")
         )
     }
 
@@ -71,12 +73,15 @@ class NightTourSpotController {
 
     @GetMapping("/{placeId}")
     @Operation(summary = "야간 관광명소 상세 조회", description = "야간 관광명소를 상세조회하는 API입니다.")
-    fun getNightTour(@PathVariable placeId: String): NightTourDTO = NightTourDTO(id = ObjectId("64a8f123b7d2e3c112233445"),
+    fun getNightTour(@PathVariable placeId: String): NightTourDTO = NightTourDTO(
+        id = ObjectId("64a8f123b7d2e3c112233445").toHexString(),
         fullAddress = "부산광역시 해운대구 달맞이길 25",
         zipcode = "48095",
+        title = "부산 산책길",
         categoryList = listOf(CategoryEnum.NATURE, CategoryEnum.NIGHT_VIEW, CategoryEnum.ROMANTIC),
         serviceHours = listOf("09:00-22:00"),
         description = "바다와 야경이 어우러진 로맨틱한 산책길입니다.",
-        imageId = ObjectId("64a8f1a2b7d2e3c111222333"))
+        imageUrl = "uploads/night-tour/wecandoit.png"
+    )
 
 }

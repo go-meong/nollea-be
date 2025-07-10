@@ -4,22 +4,24 @@ import com.goorm.maki.constant.CategoryEnum
 import org.bson.types.ObjectId
 
 data class NightTourDTO(
-    val id: ObjectId?,
+    val id: String?,
+    val title: String,
     val fullAddress: String,
     val zipcode: String,
     val categoryList: List<CategoryEnum>,
     val serviceHours: List<String>,
     val description: String,
-    val imageId: ObjectId?,
+    val imageUrl: String? = null,
 )
 
 data class NightTourRequestDto(
     val fullAddress: String,
+    val title: String,
     val zipcode: String,
     val serviceHours: List<String>,
     val categoryList: List<CategoryEnum>,
     val description: String,
-    val imageId: ObjectId?,
+    val imageId: String?,
 )
 
 data class NightTourPicDTO(
@@ -29,8 +31,4 @@ data class NightTourPicDTO(
     val path: String,          // 저장 경로 (예: /upload/...)
     val size: Long,            // 파일 크기 (바이트)
     val contentType: String    // MIME 타입 (image/jpeg 등)
-)
-
-data class NightTourPicRequestDto(
-    val description: String,
 )
