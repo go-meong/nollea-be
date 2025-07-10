@@ -9,10 +9,6 @@ enum class CategoryEnum(val description: String) {
     NIGHT_VIEW("야경"),
     ROMANTIC("로맨틱");
 
-    override fun toString(): String {
-        return description
-    }
-
     companion object {
         fun fromKoreanName(name: String): CategoryEnum? {
             return values().find { it.description == name }

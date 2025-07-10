@@ -1,12 +1,12 @@
 package com.goorm.maki.controller
 
 import com.goorm.maki.constant.CategoryEnum
-import com.goorm.maki.domain.dto.NightTourDTO
-import com.goorm.maki.domain.dto.NightTourRequestDto
+import com.goorm.maki.domain.dto.*
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.bson.types.ObjectId
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.multipart.MultipartFile
 
 @Tag(name = "야간관광명소", description = "야간 관광명소 API")
 @RestController
@@ -49,6 +49,23 @@ class NightTourSpotController {
             serviceHours = listOf("09:00-22:00"),
             description = "바다와 야경이 어우러진 로맨틱한 산책길입니다.",
             imageId = ObjectId("64a8f1a2b7d2e3c111222333")
+        )
+    }
+
+    @PostMapping(
+        "/upload-pic",
+        consumes = ["multipart/form-data"]
+    )
+    @Operation(summary = "야간 관광명소 이미지 등록", description = "야간 관광명소 이미지를 등록하는 API입니다.")
+    fun createNightTourPic(@RequestParam("file") file: MultipartFile): NightTourPicDTO {
+
+        return NightTourPicDTO(
+            id = ObjectId("64a8f1a2b7d2e3c111222333"),
+            originalName = file.originalFilename ?: "unknown",
+            savedName = file.originalFilename ?: "unknown",  // 보통 UUID로 저장함
+            path = "/upload/${file.originalFilename ?: "unknown"}",  // 저장 경로 예시
+            size = file.size,
+            contentType = file.contentType ?: "application/octet-stream"
         )
     }
 

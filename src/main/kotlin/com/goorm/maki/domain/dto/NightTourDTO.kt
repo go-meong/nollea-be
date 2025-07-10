@@ -23,6 +23,7 @@ data class NightTourRequestDto(
 )
 
 data class NightTourPicDTO(
+    val id: ObjectId,
     val originalName: String,  // 원본 파일명
     val savedName: String,     // 서버에 저장된 파일명 (UUID 등)
     val path: String,          // 저장 경로 (예: /upload/...)
