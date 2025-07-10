@@ -1,6 +1,7 @@
 package com.goorm.maki.controller
 
 import com.goorm.maki.annotation.RowBody
+import io.swagger.v3.oas.annotations.Hidden
 import org.springframework.ai.chat.client.ChatClient
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
@@ -10,7 +11,7 @@ class SpringAiController(
     private val chatClient: ChatClient
 ) {
 
-    @RowBody
+    @RowBody @Hidden
     @GetMapping("/chat")
     fun callTest(message: String) = chatClient.prompt()
         .user(message)

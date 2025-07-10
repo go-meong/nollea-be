@@ -1,5 +1,6 @@
 package com.goorm.maki.controller
 
+import com.goorm.maki.NightTourSpotService
 import com.goorm.maki.constant.CategoryEnum
 import com.goorm.maki.domain.dto.*
 import io.swagger.v3.oas.annotations.Operation
@@ -11,7 +12,9 @@ import org.springframework.web.multipart.MultipartFile
 @Tag(name = "야간관광명소", description = "야간 관광명소 API")
 @RestController
 @RequestMapping("/api/v1/night-tour")
-class NightTourSpotController {
+class NightTourSpotController(
+    private val service: NightTourSpotService
+) {
 
     @GetMapping
     @Operation(summary = "야간 관광명소 목록 조회", description = "야간 관광명소를 조회하는 API입니다.")
@@ -20,7 +23,6 @@ class NightTourSpotController {
             NightTourDTO(
                 id = ObjectId("64a8f0f8b7d2e3c123456789").toHexString(),
                 fullAddress = "서울특별시 중구 세종대로 110",
-                zipcode = "04524",
                 title = "서울야시장",
                 categoryList = listOf(CategoryEnum.FOOD, CategoryEnum.NIGHT_MARKET),
                 serviceHours = listOf("18:00-23:00", "12:00-21:00"),
@@ -31,7 +33,6 @@ class NightTourSpotController {
                 id = ObjectId("64a8f123b7d2e3c112233445").toHexString(),
                 fullAddress = "부산광역시 해운대구 달맞이길 25",
                 title = "부산 산책길",
-                zipcode = "48095",
                 categoryList = listOf(CategoryEnum.NATURE, CategoryEnum.NIGHT_VIEW, CategoryEnum.ROMANTIC),
                 serviceHours = listOf("09:00-22:00"),
                 description = "바다와 야경이 어우러진 로맨틱한 산책길입니다.",
@@ -43,15 +44,7 @@ class NightTourSpotController {
     @PostMapping
     @Operation(summary = "야간 관광명소 등록", description = "야간 관광명소를 등록하는 API입니다.")
     fun createNightTour(@RequestBody nightTourRequestDto: NightTourRequestDto): NightTourDTO {
-        return NightTourDTO(
-            id = ObjectId("64a8f123b7d2e3c112233445").toHexString(),
-            fullAddress = "부산광역시 해운대구 달맞이길 25",
-            title = "부산 산책길",
-            zipcode = "48095",
-            categoryList = listOf(CategoryEnum.NATURE, CategoryEnum.NIGHT_VIEW, CategoryEnum.ROMANTIC),
-            serviceHours = listOf("09:00-22:00"),
-            description = "바다와 야경이 어우러진 로맨틱한 산책길입니다.",
-        )
+        return service.createNightTour(nightTourRequestDto)
     }
 
     @PostMapping(
@@ -76,7 +69,6 @@ class NightTourSpotController {
     fun getNightTour(@PathVariable placeId: String): NightTourDTO = NightTourDTO(
         id = ObjectId("64a8f123b7d2e3c112233445").toHexString(),
         fullAddress = "부산광역시 해운대구 달맞이길 25",
-        zipcode = "48095",
         title = "부산 산책길",
         categoryList = listOf(CategoryEnum.NATURE, CategoryEnum.NIGHT_VIEW, CategoryEnum.ROMANTIC),
         serviceHours = listOf("09:00-22:00"),

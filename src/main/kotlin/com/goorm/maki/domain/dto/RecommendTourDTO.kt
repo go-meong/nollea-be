@@ -8,7 +8,6 @@ data class RecommendTourDTO(
     val title: String,
     val fullAddress: String,
     val coordinates: List<Double>,
-    val zipcode: String,
     val categoryList: List<CategoryEnum>,
     val serviceHours: List<String>,
     val description: String,
