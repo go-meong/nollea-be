@@ -30,7 +30,7 @@ data class RecommendTourListDTO(
     val title: String,
     val description: String,
     val recommendReason: String,
-    val reviews: List<String> = emptyList(),
+    val reviews: List<String>?,
     val reviewRatios: List<Int> = listOf(50,50),
     val imageUrl: String?,
     val coordinates: List<Double>,
@@ -60,6 +60,7 @@ data class RecommendTourListDTO(
                     recommendReason = recommendReason,
                     reviewRatios = reviewRatios,
                     description = description,
+                    reviews = reviews,
                 )
             }
     }
