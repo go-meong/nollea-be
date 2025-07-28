@@ -8,26 +8,9 @@ spring:
       api-key: ${API_KEY}
   application:
     name: maki_test
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-#    url: jdbc:mysql://localhost:3306/goorm?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-    url: jdbc:mysql://mysql-0.mysql.goormthon-4.svc.cluster.local:3306/goorm?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-    username: goorm
-    password: goorm123!
-  jpa:
-    hibernate:
-      ddl-auto: validate
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
-        dialect: org.hibernate.dialect.MySQL8Dialect
   data:
     mongodb:
-      uri: mongodb://goorm:goorm123@mongodb-0.mongodb.goormthon-4.svc.cluster.local:27017/
-#      uri: mongodb://goorm:goorm123@localhost:27017/?ssl=false
-      database: nollea
-      authentication-database: admin
+      uri: mongodb://nollea:${MONGO_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}/nollea?authSource=admin
 springdoc:
   api-docs:
     enabled: true

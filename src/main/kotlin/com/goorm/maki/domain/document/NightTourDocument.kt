@@ -2,8 +2,8 @@ package com.goorm.maki.domain.document
 
 import com.goorm.maki.constant.CategoryEnum
 import com.goorm.maki.constant.CollectionNames
-import jakarta.persistence.Id
 import org.bson.types.ObjectId
+import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
 
 @Document(collection = CollectionNames.NIGHT_TOUR)

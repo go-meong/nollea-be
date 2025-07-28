@@ -1,0 +1,119 @@
+name: CI Pipeline
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+      actions: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.PAT }}
+
+      - name: Verify tag on main branch
+        run: |
+          if [ "$(git rev-parse ${{ github.ref }})" != "$(git rev-parse origin/main)" ]; then
+            echo "Tag is not on the head of the main branch. Aborting."
+            exit 1
+          fi
+
+      - name: Extract tag version
+        id: tag
+        run: |
+          TAG_VERSION=${GITHUB_REF#refs/tags/}
+          echo "version=${TAG_VERSION}" >> $GITHUB_OUTPUT
+          echo "Tag version extracted: ${TAG_VERSION}"
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.PAT }}
+
+      - name: Convert repository name to lowercase
+        id: repo
+        run: |
+          REPO_LOWER=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
+          echo "lowercase=${REPO_LOWER}" >> $GITHUB_OUTPUT
+          echo "Lowercase repository name: ${REPO_LOWER}"
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          platforms: linux/arm64
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ steps.repo.outputs.lowercase }}:${{ steps.tag.outputs.version }}
+            ${{ env.REGISTRY }}/${{ steps.repo.outputs.lowercase }}:latest
+          labels: |
+            org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
+            org.opencontainers.image.revision=${{ github.sha }}
+
+  update-deployment-repo:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: write
+
+    steps:
+      - name: Checkout deployment repo
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository_owner }}/nollea-deploy
+          token: ${{ secrets.PAT }}
+          fetch-depth: 0
+
+      - name: Update K8s deployment image tag
+        run: |
+          TAG_VERSION=${GITHUB_REF#refs/tags/}
+          REPO_LOWER=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
+          echo "Updating image tag to: $TAG_VERSION"
+          echo "Repository (lowercase): $REPO_LOWER"
+          
+          # 현재 deployment.yaml 내용 확인
+          echo "Current deployment.yaml image line:"
+          grep "image:" k8s/deployment.yaml || echo "No image line found"
+          
+          # deployment.yaml에서 이미지 태그 업데이트 (소문자 레포지토리 이름 사용)
+          sed -i "s|image: ghcr\.io/[^:]*:[^[:space:]]*|image: ${{ env.REGISTRY }}/${REPO_LOWER}:${TAG_VERSION}|g" k8s/deployment.yaml
+          
+          # 변경사항 확인
+          echo "Updated deployment.yaml image line:"
+          grep "image:" k8s/deployment.yaml
+
+      - name: Commit updated deployment
+        run: |
+          TAG_VERSION=${GITHUB_REF#refs/tags/}
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          
+          # 변경사항이 있는지 확인
+          if git diff --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          
+          git add k8s/deployment.yaml
+          git commit -m "Update image tag to ${TAG_VERSION}"
+          git push origin main
