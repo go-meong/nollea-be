@@ -90,17 +90,9 @@ jobs:
           echo "Updating image tag to: $TAG_VERSION"
           echo "Repository (lowercase): $REPO_LOWER"
           
-          # 현재 deployment.yaml 내용 확인
-          echo "Current deployment.yaml image line:"
-          grep "image:" k8s/deployment.yaml || echo "No image line found"
-          
           # deployment.yaml에서 이미지 태그 업데이트 (소문자 레포지토리 이름 사용)
-          sed -i "s|image: ghcr\.io/[^:]*:[^[:space:]]*|image: ${{ env.REGISTRY }}/${REPO_LOWER}:${TAG_VERSION}|g" k8s/deployment.yaml
+          sed -i "s|image: ghcr\.io/[^:]*:[^[:space:]]*|image: ${{ env.REGISTRY }}/${REPO_LOWER}:${TAG_VERSION}|g" k3s/backend/deployment.yaml
           
-          # 변경사항 확인
-          echo "Updated deployment.yaml image line:"
-          grep "image:" k8s/deployment.yaml
-
       - name: Commit updated deployment
         run: |
           TAG_VERSION=${GITHUB_REF#refs/tags/}
@@ -113,6 +105,6 @@ jobs:
             exit 0
           fi
           
-          git add k8s/deployment.yaml
+          git add k3s/backend/deployment.yaml
           git commit -m "Update image tag to ${TAG_VERSION}"
-          git push origin main
+          git push origin master
