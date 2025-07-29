@@ -12,7 +12,7 @@ class SpringAiController(
 ) {
 
     @RowBody @Hidden
-    @GetMapping("/chat")
+    @GetMapping("/api/v1/chat")
     fun callTest(message: String) = chatClient.prompt()
         .user(message)
         .call()

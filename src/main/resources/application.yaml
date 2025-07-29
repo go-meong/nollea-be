@@ -1,20 +1,22 @@
 spring:
+  application:
+    name: nollea-be
   servlet:
     multipart:
       max-file-size: 50MB
       max-request-size: 50MB
   ai:
     openai:
-      api-key: ${API_KEY}
-  application:
-    name: maki_test
+      api-key: ${OPENAI_API_KEY}
   data:
     mongodb:
       uri: mongodb://nollea:${MONGO_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}/nollea?authSource=admin
 springdoc:
   api-docs:
     enabled: true
+  swagger-ui:
+    path: /api/swagger-ui.html
 kakao:
   developers:
     app:
-      api-key: f2bebe9dd7507d16b8122809b58911ce
+      api-key: ${KAKAO_MAP_API_KEY}

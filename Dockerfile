@@ -11,7 +11,7 @@ COPY . .
 
 RUN chmod +x ./gradlew
 RUN ./gradlew --stop
-RUN ./gradlew clean bootJar --no-daemon --no-parallel --warning-mode all && \
+RUN ./gradlew clean bootJar --no-daemon --no-parallel && \
     rm -rf /tmp/kotlin-daemon*
 
 FROM eclipse-temurin:21-jre
